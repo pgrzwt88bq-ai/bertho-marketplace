@@ -1,17 +1,12 @@
 import {getRouteLocale} from '@/i18n/server';
-import {cacheLife, cacheTag} from 'next/cache';
 import {getTopCollections} from '@/lib/vendure/cached';
 import Image from "next/image";
 import {NavigationLink} from '@/components/shared/navigation-link';
 import {getTranslations} from 'next-intl/server';
 
-
 const COPYRIGHT_YEAR = 2026;
 
 async function Copyright() {
-    'use cache'
-    cacheLife('days');
-
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Footer'});
 
@@ -23,12 +18,7 @@ async function Copyright() {
 }
 
 export async function Footer() {
-    'use cache'
-    cacheLife('days');
-
     const locale = await getRouteLocale();
-    cacheTag(`footer-${locale}`);
-
     const t = await getTranslations({locale, namespace: 'Footer'});
     const collections = await getTopCollections(locale);
 
@@ -129,8 +119,7 @@ export async function Footer() {
                 </div>
 
                 {/* Bottom Section */}
-                <div
-                    className="mt-12 pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
+                <div className="mt-12 pt-8 border-t border-border flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted-foreground">
                     <Copyright/>
                     <div className="flex items-center gap-2">
                         <span>{t('poweredBy')}</span>
