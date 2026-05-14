@@ -30,6 +30,7 @@ function LoginFormSkeleton() {
                 <Skeleton className="h-10 w-full"/>
             </CardContent>
             <CardFooter className="flex flex-col space-y-4">
+
                 <div className="flex flex-col items-center space-y-2">
                     <Skeleton className="h-4 w-40"/>
                 </div>
@@ -41,33 +42,8 @@ function LoginFormSkeleton() {
 async function SignInContent({searchParams}: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
     const resolvedParams = await searchParams;
     const redirectTo = resolvedParams?.redirectTo as string | undefined;
+
     return <LoginForm redirectTo={redirectTo}/>;
-}
-
-async function ProductsList() {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`, {
-        cache: 'no-store'
-    });
-    const data = await res.json();
-    const products = data.products.items;
-
-    return (
-        <div className="mt-12 space-y-6">
-            <h2 className="text-2xl font-bold text-center">Nos produits</h2>
-            <div className="grid grid-cols-1 gap-4">
-                {products.map((p: any) => (
-                    <Card key={p.id}>
-                        <CardContent className="pt-6">
-                            <h3 className="font-semibold">{p.name}</h3>
-                            <p className="text-lg font-bold text-primary mt-2">
-                                {p.variants[0].priceWithTax.toLocaleString()} {p.variants[0].currencyCode}
-                            </p>
-                        </CardContent>
-                    </Card>
-                ))}
-            </div>
-        </div>
-    );
 }
 
 export default async function SignInPage({searchParams}: PageProps<'/[locale]/sign-in'>) {
@@ -112,11 +88,6 @@ export default async function SignInPage({searchParams}: PageProps<'/[locale]/si
                     </div>
                     <Suspense fallback={<LoginFormSkeleton/>}>
                         <SignInContent searchParams={searchParams}/>
-                    </Suspense>
-
-                    {/* Liste des produits ajoutée ici */}
-                    <Suspense fallback={<div>Chargement des produits...</div>}>
-                        <ProductsList />
                     </Suspense>
                 </div>
             </div>
