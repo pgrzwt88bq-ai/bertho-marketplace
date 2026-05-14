@@ -14,10 +14,9 @@ export async function GET() {
             name
             slug
             variants {
-              priceWithTax {
-                amount
-                currencyCode
-              }
+              id
+              priceWithTax
+              currencyCode
             }
           }
         }
