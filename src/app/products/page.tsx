@@ -1,15 +1,18 @@
 import {Card, CardContent} from "@/components/ui/card";
 
+export const revalidate = 60;
+
 export const metadata = {
   title: "Products | Bertho Marketplace",
   description: "Browse our products available in XOF. Fast delivery and secure payment."
 };
 
 async function getProducts() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/products`, {
-    cache: 'no-store'
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/products`, {
+    next: { revalidate: 60 },
+    cache: 'force-cache'
   });
-  
+
   if (!res.ok) return [];
   const data = await res.json();
   return data.products?.items || [];
@@ -37,7 +40,7 @@ export default async function ProductsPage() {
             <CardContent className="pt-6 space-y-3">
               <h3 className="font-semibold text-lg">{p.name}</h3>
               <p className="text-2xl font-bold text-primary">
-                {p.variants[0].priceWithTax.toLocaleString()} {p.variants[0].currencyCode}
+                {p.variants[0]?.priceWithTax?.toLocaleString()?? 'N/A'} {p.variants[0]?.currencyCode?? ''}
               </p>
             </CardContent>
           </Card>
