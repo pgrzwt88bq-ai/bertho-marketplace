@@ -1,7 +1,5 @@
 import {Card, CardContent} from "@/components/ui/card";
 
-// Supprime cette ligne ↓
-
 export const metadata = {
   title: "Products | Bertho Marketplace",
   description: "Browse our products available in XOF. Fast delivery and secure payment."
