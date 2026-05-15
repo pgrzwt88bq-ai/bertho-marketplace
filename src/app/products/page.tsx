@@ -1,7 +1,6 @@
 import {Card, CardContent} from "@/components/ui/card";
 
 // Supprime cette ligne ↓
-// export const revalidate = 60;
 
 export const metadata = {
   title: "Products | Bertho Marketplace",
