@@ -13,22 +13,33 @@ async function getProducts() {
     return [];
   }
 
+  // Évite d'avoir /shop-api/shop-api si la variable contient déjà le chemin
+  const endpoint = url.endsWith('/shop-api') ? url : `${url}/shop-api`;
+
   try {
-    const res = await fetch(`${url}/shop-api`, {
+    const res = await fetch(endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        query: `query { products { items { id name slug }`
+        // CORRECTION : Ajout des deux accolades fermantes
+        query: `query { products { items { id name slug } } }`
       }),
-      cache: 'no-store' // Important : pas de cache pour tester
+      cache: 'no-store' // Pas de cache pour tester
     });
 
     if (!res.ok) {
-      console.error('Vendure error:', res.status);
+      console.error('Vendure HTTP error:', res.status, res.statusText);
       return [];
     }
 
     const data = await res.json();
+
+    // Log des erreurs spécifiques à GraphQL
+    if (data.errors) {
+      console.error('Vendure GraphQL error:', JSON.stringify(data.errors, null, 2));
+      return [];
+    }
+
     return data.data?.products?.items || [];
   } catch (e) {
     console.error('Fetch error:', e);
@@ -48,7 +59,7 @@ export default async function SearchPage() {
       <h1 className="text-4xl font-bold mb-8">Products</h1>
       <div className="grid grid-cols-3 gap-4">
         {products.map((p: any) => (
-          <Card key={p.id}>{p.name}</Card>
+          <Card key={p.id} className="p-4">{p.name}</Card>
         ))}
       </div>
     </div>
