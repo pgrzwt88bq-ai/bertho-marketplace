@@ -1,5 +1,3 @@
-"use client"
-
 import {cacheLife, cacheTag} from 'next/cache';
 import {CartIcon} from './cart-icon';
 import {query} from '@/lib/vendure/api';
