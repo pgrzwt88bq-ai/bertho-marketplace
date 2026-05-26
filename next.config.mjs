@@ -5,7 +5,6 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     images: {
-        dangerouslyAllowLocalIP: true,
         remotePatterns: [
             {
                 hostname: 'readonlydemo.vendure.io',
@@ -17,9 +16,6 @@ const nextConfig = {
                 hostname: 'localhost'
             }
         ],
-    },
-    experimental: {
-        rootParams: true
     }
 };
 
