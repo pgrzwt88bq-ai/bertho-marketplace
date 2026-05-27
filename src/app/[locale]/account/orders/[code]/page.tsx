@@ -6,10 +6,12 @@ import {getTranslations} from 'next-intl/server';
 import {getRouteLocale} from '@/i18n/server';
 import {OrderDetail} from './order-detail';
 
-type OrderDetailPageProps = PageProps<'/[locale]/account/orders/[code]'>;
+type Props = {
+  params: { locale: string; code: string };
+};
 
-export async function generateMetadata({params}: OrderDetailPageProps): Promise<Metadata> {
-    const {code} = await params;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+    const { code } = params;
     const locale = await getRouteLocale();
     const t = await getTranslations({locale, namespace: 'Account'});
     return {
