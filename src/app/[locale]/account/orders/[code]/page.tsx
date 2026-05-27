@@ -1,10 +1,10 @@
-import type {Metadata} from 'next';
-import {Suspense} from 'react';
-import {query} from '@/lib/vendure/api';
-import {GetOrderDetailQuery} from '@/lib/vendure/queries';
-import {getTranslations} from 'next-intl/server';
-import {getRouteLocale} from '@/i18n/server';
-import {OrderDetail} from './order-detail';
+import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import { query } from '@/lib/vendure/api';
+import { GetOrderDetailQuery } from '@/lib/vendure/queries';
+import { getTranslations } from 'next-intl/server';
+import { getRouteLocale } from '@/i18n/server';
+import { OrderDetail } from './order-detail';
 
 type Props = {
   params: { locale: string; code: string };
@@ -13,20 +13,18 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { code } = params;
     const locale = await getRouteLocale();
-    const t = await getTranslations({locale, namespace: 'Account'});
+    const t = await getTranslations({ locale, namespace: 'Account' });
     return {
-        title: t('order', {code}),
+        title: t('order', { code }),
     };
 }
 
-export default async function OrderDetailPage(props: PageProps<'/[locale]/account/orders/[code]'>) {
+export default async function OrderDetailPage({ params }: Props) {
+    const { code } = params;
     const locale = await getRouteLocale();
-    const t = await getTranslations({locale, namespace: 'Common'});
+    const t = await getTranslations({ locale, namespace: 'Common' });
 
-    // Start the fetch in the page (dynamic parent) and pass promise into Suspense.
-    const orderPromise = props.params.then(({code}) =>
-        query(GetOrderDetailQuery, {code}, {useAuthToken: true, fetch: {}})
-    );
+    const orderPromise = query(GetOrderDetailQuery, { code }, { useAuthToken: true, fetch: {} });
 
     return (
         <Suspense fallback={<div className="p-8 text-center">{t('loading')}</div>}>
