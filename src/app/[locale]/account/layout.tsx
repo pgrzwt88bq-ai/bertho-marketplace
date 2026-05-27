@@ -13,7 +13,13 @@ const navItems = [
     {href: '/account/profile', labelKey: 'profile', icon: 'User'},
 ];
 
-export default async function AccountLayout({children}: LayoutProps<'/[locale]/account'>) {
+export default async function AccountLayout({
+  children, 
+  params
+}: {
+  children: React.ReactNode;
+  params: { locale: string };
+}) {
     return (
         <div className="container mx-auto px-4 py-30">
             {/* Mobile: horizontal tab bar */}
